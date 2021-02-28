@@ -41,6 +41,8 @@ for i in y:
 
 ind = y.index(max(var315))
 
+mean = sum(y)/len(y)
+
 print("a0=%s a1=%s a2=%s a3=%s"%(a0, a1, a2, a3))
 print("X1: %s"%x1)
 print("X2: %s"%x2)
@@ -51,5 +53,9 @@ print("dx: %s %s %s"%(dx1, dx2, dx3))
 print("Xн1: %s"%xn1)
 print("Xн2: %s"%xn2)
 print("Xн3: %s"%xn3)
-print("mean y: %s"%numpy.mean(y))
+print("mean y: %s"%mean)
 print("→ Y ,де Y - середнє Y: x1 = %s, x2 = %s, x3 = %s"%(x1[ind],x2[ind],x3[ind]))
+
+
+
+
