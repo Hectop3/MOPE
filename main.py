@@ -101,7 +101,7 @@ def normalized_regression_coeffs():
     def m_i(arr: np.array):
         return np.average(arr)
 
-    def a_i(arr: np.array):
+    def a_i(arr: np.array):: #Обчислення нормованих коефіцієнтів рівняння регресії
         return sum(arr**2)/len(arr)
 
     def a_jj(arr1: np.array, arr2: np.array):
