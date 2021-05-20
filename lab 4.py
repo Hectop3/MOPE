@@ -4,7 +4,7 @@ import sklearn.linear_model as lm
 from scipy.stats import f, t
 from numpy.linalg import solve
 
-
+sig_coefs_n=0
 def regression(x, b):
     y = sum([x[i] * b[i] for i in range(len(x))])
     return y
@@ -151,6 +151,7 @@ def check(X, Y, B, n, m, norm=False):
     print('\nКритерій Стьюдента:\n', ts)
     res = [t for t in ts if t > student_cr_table]
     final_k = [B[i] for i in range(len(ts)) if ts[i] in res]
+    sig_coefs_n = len(final_k[1:])
     print('\nКоефіцієнти {} статистично незначущі, тому ми виключаємо їх з рівняння.'.format(
         [round(i, 3) for i in B if i not in final_k]))
 
@@ -329,4 +330,9 @@ if __name__ == '__main__':
     y_max = 200 + int(sum([x[1] for x in x_range]) / 3)
     y_min = 200 + int(sum([x[0] for x in x_range]) / 3)
 
-    main(8, 3)
+    total_sig_coefs_q = 0
+    n = 100
+    for _ in range(n):
+        main(7, 8)
+        total_sig_coefs_q += sig_coefs_n
+    print("\nКількість значущих коефіцієнтів за {} виконань програми: {}".format(n, total_sig_coefs_q))
