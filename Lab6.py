@@ -5,8 +5,10 @@ from itertools import compress
 from scipy.stats import f, t
 import numpy
 from functools import reduce
+from time import time
 import matplotlib.pyplot as plot
 
+time1=0
 
 def regression_equation(x1, x2, x3, coeffs, importance=[True] * 11):
     factors_array = [1, x1, x2, x3, x1 * x2, x1 * x3, x2 * x3, x1 * x2 * x3, x1 ** 2, x2 ** 2, x3 ** 2]
@@ -129,7 +131,6 @@ def cochran_criteria(m, N, y_table):
         print("Gp > Gt => дисперсії нерівномірні - треба ще експериментів")
         return False
 
-
 def student_criteria(m, N, y_table, beta_coefficients):
     def get_student_value(f3, q):
         return Decimal(abs(t.ppf(q / 2, f3))).quantize(Decimal('.0001')).__float__()
@@ -138,6 +139,7 @@ def student_criteria(m, N, y_table, beta_coefficients):
     average_variation = numpy.average(list(map(numpy.var, y_table)))
     variation_beta_s = average_variation / N / m
     standard_deviation_beta_s = math.sqrt(variation_beta_s)
+    time1 = time()
     t_i = [abs(beta_coefficients[i]) / standard_deviation_beta_s for i in range(len(beta_coefficients))]
     f3 = (m - 1) * N
     q = 0.05
@@ -172,6 +174,8 @@ def fisher_criteria(m, N, d, x_table, y_table, b_coefficients, importance):
     def get_fisher_value(f3, f4, q):
         return Decimal(abs(f.isf(q, f4, f3))).quantize(Decimal('.0001')).__float__()
 
+
+
     f3 = (m - 1) * N
     f4 = N - d
     q = 0.05
@@ -188,7 +192,11 @@ def fisher_criteria(m, N, d, x_table, y_table, b_coefficients, importance):
     print("Теоретичні значення y для різних комбінацій факторів:")
     print("\n".join(["{arr[0]}: y = {arr[1]}".format(arr=el) for el in theoretical_values_to_print]))
     print("Fp = {}, Ft = {}".format(f_p, f_t))
-    print("Fp < Ft => модель адекватна" if f_p < f_t else "Fp > Ft => модель неадекватна")
+    time2 = time()
+    if (time2 - time1) > 0.1:
+        print("Модель неадекватна")
+    else:
+        print("Fp < Ft => модель адекватна" if f_p < f_t else "Fp > Ft => модель неадекватна")
     return True if f_p < f_t else False
 
 
